@@ -81,15 +81,19 @@ c = 1;
 for d = 1:length(filecopylist)
     
     [pathstr, filename, ext] = fileparts(filecopylist{d});
-    if ~isempty(find(pathstr(length(homedir)+1:end)==filesep,1))
-        reponame = pathstr(length(homedir)+1:find(pathstr(length(homedir)+1:end)==filesep,1,'first')+length(homedir)-1);
-    else
-        reponame = pathstr(length(homedir)+1:end);
-    end
-    
-    if isempty(ismember(repolist,reponame)) || isempty(find(ismember(repolist,reponame),1))
-        repolist{c,1} = reponame;
-        c = c+1;
+    if ~strcmp([pathstr filesep],homedir) % don't include the MATLAB directory itself as a repository
+
+        if ~isempty(find(pathstr(length(homedir)+1:end)==filesep,1))
+            reponame = pathstr(length(homedir)+1:find(pathstr(length(homedir)+1:end)==filesep,1,'first')+length(homedir)-1);
+        else
+            reponame = pathstr(length(homedir)+1:end);
+        end
+
+        if isempty(ismember(repolist,reponame)) || isempty(find(ismember(repolist,reponame),1))
+            repolist{c,1} = reponame;
+            c = c+1;
+        end
+        
     end
     
 end
