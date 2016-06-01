@@ -12,7 +12,7 @@
 %   1st section backs up every .m code to the network
 %   2nd section commits code changes to git and pushes to github
 %
-%   This version revised 2016-05-25 by Mike Jutras for use on RBU-MikeJ2
+%   This version revised 2016-06-01 by Mike Jutras for use on RBU-MikeJ2
 
 homedir = 'C:\Users\michael.jutras\Documents\MATLAB\'; % Matlab's home dir where all folders are stored
 cd(homedir);
@@ -52,7 +52,7 @@ ind = strfind(dir_to_copy,'.git');
 dir_to_copy = dir_to_copy(cellfun('isempty',ind));
 
 disp('Saving Matlab files to Network...');
-tic
+
 today = datenum(clock);
 filecopylist = {};
 c = 1;
@@ -87,8 +87,8 @@ for d = 1:length(filecopylist)
         reponame = pathstr(length(homedir)+1:end);
     end
     
-    if isempty(ismember(repolist,reponame))
-        repolist{c} = reponame;
+    if isempty(ismember(repolist,reponame)) || isempty(find(ismember(repolist,reponame),1))
+        repolist{c,1} = reponame;
         c = c+1;
     end
     
@@ -105,20 +105,32 @@ for d = 1:length(repolist)
     
     cd(fullfile(homedir,reponame))
     for f = 1:length(filecopylist)
-        if filecopylist{f}
-                        system(['git add ' files(f).name]);
-                        disp(['Adding ' [homedir dd(d).name '\' files(f).name] ' to repository'])
-                    end
-                end
-                %commit changes to git repository for all files in folder
-                system(['git commit -m autocommit_' date]); % prompt to add alternative message to commit?
-                %push changes to github
-                system(['git push -u ' reponame ' master'])
-            end
+        if ~isempty(strfind(filecopylist{f},pwd))
+            system(['git add ' filecopylist{f}(length(pwd)+2:end)]);
+            disp(['Adding ' filecopylist{f}(length(pwd)+2:end) ' to repository'])
         end
     end
-    cd(homedir);
+    
+    %commit changes to git repository for all files in folder
+    system('git commit');
+    
 end
-disp('Code changes sucessfully tracked by Git')
-toc
+
+c = clock;
+logfile = fullfile(homedir,['gitrepolog_' date '_' num2str(c(4)) '_' num2str(c(5)) '.txt']);
+fid = fopen(logfile, 'wt');
+fprintf(fid,'\n%s','Saved the following files to Network:');
+for k = 1:length(filecopylist)
+    fprintf(fid,'\n%s',filecopylist{k});
+end
+fprintf(fid,'\n');
+fprintf(fid,'\n%s','Committed the following repositories (push these to Github):');
+for k = 1:length(repolist)
+    fprintf(fid,'\n%s',repolist{k});
+end
+fclose(fid);
+
+disp('Code changes successfully tracked by Git. Check logfile for repositories to push.')
+
+cd(homedir)
 
