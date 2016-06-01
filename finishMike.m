@@ -121,7 +121,7 @@ for d = 1:length(repolist)
 end
 
 c = clock;
-logfile = fullfile(homedir,['gitrepolog_' date '_' num2str(c(4)) '_' num2str(c(5)) '.txt']);
+logfile = fullfile(homedir,['finishlog_' date '_' num2str(c(4)) '_' num2str(c(5)) '.txt']);
 fid = fopen(logfile, 'wt');
 fprintf(fid,'\n%s','Saved the following files to Network:');
 for k = 1:length(filecopylist)
