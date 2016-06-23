@@ -102,12 +102,12 @@ for d = 1:length(repolist)
     
     reponame = repolist{d};
 
+    cd(fullfile(homedir,reponame))
     [~,result] = system(['git ls-remote ' reponame]);
     if ~isempty(strfind(result,'fatal')) % init repository if it does not already exist
         system(['git init ' reponame]);
     end
     
-    cd(fullfile(homedir,reponame))
     for f = 1:length(filecopylist)
         if ~isempty(strfind(filecopylist{f},pwd))
             system(['git add ' filecopylist{f}(length(pwd)+2:end)]);
