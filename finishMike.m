@@ -15,7 +15,7 @@
 %   This version revised 2016-06-01 by Mike Jutras for use on RBU-MikeJ2
 
 homedir = 'C:\Users\michael.jutras\Documents\MATLAB\'; % Matlab's home dir where all folders are stored
-cd(homedir);
+cd(homedir)
 netdir = 'R:\Buffalo Lab\Mike\MATLAB\'; % location to store file copies
 % disp('Saving workspace data');
 % save([homedir 'LastWorkSpace']) %save the last things on the workspace just in case...optional
@@ -102,12 +102,13 @@ for d = 1:length(repolist)
     
     reponame = repolist{d};
 
-    cd(fullfile(homedir,reponame))
+    cd(homedir)
     [~,result] = system(['git ls-remote ' reponame]);
     if ~isempty(strfind(result,'fatal')) % init repository if it does not already exist
         system(['git init ' reponame]);
     end
     
+    cd(fullfile(homedir,reponame))
     for f = 1:length(filecopylist)
         if ~isempty(strfind(filecopylist{f},pwd))
             system(['git add ' filecopylist{f}(length(pwd)+2:end)]);
