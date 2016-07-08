@@ -11,7 +11,7 @@ For this to work, the following practices must be implemented:
 
 •	Make sure repository names don’t contain spaces (same goes for directories that are used to house repositories).
 
-•	When modifying code that has been pushed to Github, it should be cloned on the local drive instead of copying from the network drive, to preserve the Git logging.
+•	When modifying code that has been pushed to Github, it should be pulled/cloned on the local drive instead of copying from the network drive, to preserve the Git logging.
 
 •	Only .m files will be backed up! Ensure that there are no .txt files or other misc. files (.py?) that are essential.
 
