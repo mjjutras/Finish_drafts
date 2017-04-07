@@ -28,7 +28,7 @@ datebuffer = 7; %files that have changed in the last # many days to backup
 % the following strings will be removed from the list of dirs to copy
 % especially useful for 'fieldtrip'
 dir_not_to_copy = {'fieldtrip' 'asv' 'Blackrock' 'CSD' 'CircStat2010b' ...
-    'export_fig'};
+    'export_fig' 'chronux'};
 
 % get list of all subdirectories within homedir
 p = genpath(homedir);
